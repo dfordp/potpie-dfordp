@@ -17,12 +17,7 @@ blar-graph==1.0.11
 openai==1.56.2
 uuid6==2024.7.10
 aiohttp==3.11.9
-langchain==0.2.17
-langchain-anthropic==0.1.23
-langchain-community==0.2.19
-langchain-core==0.2.43
-langchain-openai==0.1.25
-langchain-postgres==0.0.12
+litellm==1.58.1
 langgraph==0.2.58
 firebase-admin==6.6.0
 portkey-ai==1.9.7

@@ -3,7 +3,7 @@ import logging
 from datetime import datetime, timezone
 from typing import Any, AsyncGenerator, Dict, List, Optional, TypedDict
 
-from langchain.prompts import ChatPromptTemplate
+from litellm import acompletion
 from langgraph.graph import END, StateGraph
 from langgraph.types import Command, StreamWriter
 from sqlalchemy import func
@@ -521,24 +521,27 @@ class ConversationService:
             return conversation
         return None
 
-    async def _generate_title(
-        self, conversation: Conversation, message_content: str
-    ) -> str:
+    async def _generate_title(self, conversation: Conversation, message_content: str) -> str:
         agent_type = conversation.agent_ids[0]
 
-        llm = self.provider_service.get_small_llm(agent_type=AgentType.LANGCHAIN)
-        prompt = ChatPromptTemplate.from_template(
-            "Given an agent type '{agent_type}' and an initial message '{message}', "
+        # Retrieve the appropriate LLM model name for the agent type
+        model_name = self.provider_service.get_small_llm_model_name(agent_type=AgentType.LITELLM)
+
+        # Construct the prompt manually
+        prompt = (
+            f"Given an agent type '{agent_type}' and an initial message '{message_content}', "
             "generate a concise and relevant title for a conversation. "
-            "The title should be no longer than 50 characters. Only return title string, do not wrap in quotes."
+            "The title should be no longer than 50 characters. Only return the title string, do not wrap it in quotes."
         )
 
-        messages = prompt.format_messages(
-            agent_type=agent_type, message=message_content
-        )
-        response = await llm.agenerate([messages])
+        # Prepare the message in the format expected by LiteLLM
+        messages = [{"role": "user", "content": prompt}]
 
-        generated_title = response.generations[0][0].text.strip()
+        # Generate the response asynchronously
+        response = await acompletion(model=model_name, messages=messages)
+
+        # Extract and process the generated title
+        generated_title = response.choices[0].message.content.strip()
         if len(generated_title) > 50:
             generated_title = generated_title[:50].strip() + "..."
         return generated_title

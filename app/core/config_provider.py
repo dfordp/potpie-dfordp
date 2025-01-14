@@ -24,11 +24,11 @@ class ConfigProvider:
         return [
             {
                 "id": "demo8",
-                "name": "langchain",
-                "full_name": "langchain-ai/langchain",
+                "name": "litellm",
+                "full_name": "BerriAI/litellm",
                 "private": False,
-                "url": "https://github.com/langchain-ai/langchain",
-                "owner": "langchain-ai",
+                "url": "https://github.com/BerriAI/litellm",
+                "owner": "BerriAI"
             },
             {
                 "id": "demo7",

@@ -71,7 +71,7 @@ class ParsingController:
             "AgentOps-AI/agentops",
             "calcom/cal.com",
             "SigNoz/signoz",
-            "langchain-ai/langchain",
+            "BerriAI/litellm",
             "AgentOps-AI/AgentStack",
             "formbricks/formbricks",
         ]

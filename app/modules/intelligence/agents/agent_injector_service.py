@@ -41,9 +41,9 @@ class AgentInjectorService:
         self.user_id = user_id
 
     def _initialize_agents(self) -> Dict[str, Any]:
-        mini_llm = self.provider_service.get_small_llm(agent_type=AgentType.LANGCHAIN)
+        mini_llm = self.provider_service.get_small_llm(agent_type=AgentType.LITELLM)
         reasoning_llm = self.provider_service.get_large_llm(
-            agent_type=AgentType.LANGCHAIN
+            agent_type=AgentType.LITELLM
         )
         return {
             "debugging_agent": DebuggingChatAgent(mini_llm, reasoning_llm, self.sql_db),
@@ -66,7 +66,7 @@ class AgentInjectorService:
             return self.agents[agent_id]
         else:
             reasoning_llm = self.provider_service.get_large_llm(
-                agent_type=AgentType.LANGCHAIN
+                agent_type=AgentType.LITELLM
             )
             return CustomAgent(
                 llm=reasoning_llm,
